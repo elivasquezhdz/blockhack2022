@@ -13,8 +13,13 @@ def get_nft(marketplace,url,browser):
         nft = soup.find_all("img", {"class": "Image--image"})
 
         if(len(nft) == 0):
-            nft = soup.find_all("video", {"class": "AssetMedia--video"})[0]
-            nft = nft.children.__next__()['src']
+            nft = soup.find_all("video", {"class": "AssetMedia--video"})
+            if(len(nft) == 0):
+                print("no nft found")
+                exit()
+            else:
+                
+                nft = nft[0].children.__next__()['src']
         else:
             nft = nft[0]['src']
         title = soup.find_all("h1", {"class": "sc-1xf18x6-0 hDbqle item--title"})[0].text
