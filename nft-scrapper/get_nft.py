@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup as bs
-from selenium import webdriver
 import time
+import qrcode
 def get_nft(marketplace,url,browser):
     browser.get(url)
     html = browser.page_source
@@ -35,9 +35,11 @@ def get_nft(marketplace,url,browser):
         html = browser.page_source
         soup = bs(html, 'html.parser')
         profile_pic = soup.find_all("img",{"class":"sc-ya60av-0 koxJAZ"})[0]['src']
-
-        values = { "nft":nft, "title":title,"description":description,"collection":collection, \
-                "creator_link":creator_link,"profile_pic":profile_pic
+        address = url.split("/")[-2] + "_" + url.split("/")[-1]
+        img = qrcode.make(address)
+        img.save(address + ".png")
+        values = {"url":url, "nft":nft, "title":title,"description":description,"collection":collection, \
+                "creator_link":creator_link,"profile_pic":profile_pic,"address":address
 
         }
         return values
