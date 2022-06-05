@@ -1,6 +1,8 @@
 from bs4 import BeautifulSoup as bs
 import time
 import qrcode
+import string
+import random
 def get_nft(marketplace,url,browser):
     browser.get(url)
     html = browser.page_source
@@ -35,11 +37,11 @@ def get_nft(marketplace,url,browser):
         html = browser.page_source
         soup = bs(html, 'html.parser')
         profile_pic = soup.find_all("img",{"class":"sc-ya60av-0 koxJAZ"})[0]['src']
-        address = url.split("/")[-2] + "_" + url.split("/")[-1]
-        img = qrcode.make(address)
-        img.save(address + ".png")
+        qr = "".join([random.choice(string.ascii_letters) for x in range(8)])
+        img = qrcode.make(url)
+        img.save(qr + ".png")
         values = {"url":url, "nft":nft, "title":title,"description":description,"collection":collection, \
-                "creator_link":creator_link,"profile_pic":profile_pic,"address":address
+                "creator_link":creator_link,"profile_pic":profile_pic,"qr":qr
 
         }
         return values
